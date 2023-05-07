@@ -6,6 +6,7 @@ import com.quicklybly.vacationcalendar.service.CalculatorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @RequiredArgsConstructor
@@ -13,7 +14,11 @@ import java.time.LocalDate;
 public class CalculatorServiceImpl implements CalculatorService {
     @Override
     public CalculateResponse calculate(CalculateRequest request) {
-        return null;
+        var days = BigDecimal.valueOf(request.daysOfVacation());
+        var averageSalary = request.averageSalary();
+        var payment = averageSalary.multiply(days);
+
+        return new CalculateResponse(payment);
     }
 
     @Override

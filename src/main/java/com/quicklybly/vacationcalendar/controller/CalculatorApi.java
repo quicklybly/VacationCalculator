@@ -24,6 +24,8 @@ public interface CalculatorApi {
             description = "Validation error",
             content = @Content(schema = @Schema(implementation = Map.class)))
     CalculateResponse calculate(@RequestBody CalculateRequest request,
-                                @Parameter(name = "start", description = "Date of vacation start")
-                                    Optional<LocalDate> startDate);
+                                @Parameter(name = "start",
+                                        description = "Date of vacation start",
+                                        example = "2023-01-01")
+                                Optional<LocalDate> startDate);
 }
