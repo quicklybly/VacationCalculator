@@ -13,10 +13,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RequestMapping("/")
 @RestController
-public class CalculatorController {
+public class CalculatorController implements CalculatorApi {
     private final CalculatorService calculatorService;
-    //TODO add swagger
-    @GetMapping("/calculate")
+
+    @Override
+    @PostMapping("/calculate")
     public CalculateResponse calculate(@RequestBody @Valid CalculateRequest request,
                                        @RequestParam(name = "start", required = false) Optional<LocalDate> startDate) {
         return calculatorService.calculate(request, startDate);
