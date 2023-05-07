@@ -4,9 +4,10 @@ import com.quicklybly.vacationcalendar.dto.CalculateRequest;
 import com.quicklybly.vacationcalendar.dto.CalculateResponse;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 public interface CalculatorService {
-    CalculateResponse calculate(CalculateRequest request,
-                                Optional<LocalDate> startDate);
+    CalculateResponse calculateWithStartDate(CalculateRequest request,
+                                             LocalDate startDate);
+
+    CalculateResponse calculate(CalculateRequest request);
 }

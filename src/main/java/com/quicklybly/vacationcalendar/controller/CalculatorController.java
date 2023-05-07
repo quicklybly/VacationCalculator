@@ -20,6 +20,9 @@ public class CalculatorController implements CalculatorApi {
     @PostMapping("/calculate")
     public CalculateResponse calculate(@RequestBody @Valid CalculateRequest request,
                                        @RequestParam(name = "start", required = false) Optional<LocalDate> startDate) {
-        return calculatorService.calculate(request, startDate);
+        if (startDate.isPresent()) {
+            return calculatorService.calculateWithStartDate(request, startDate.get());
+        }
+        return calculatorService.calculate(request);
     }
 }
