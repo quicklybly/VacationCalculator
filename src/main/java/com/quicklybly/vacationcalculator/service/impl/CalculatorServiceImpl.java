@@ -42,7 +42,7 @@ public class CalculatorServiceImpl implements CalculatorService {
             var dayStatusMap = isDayOffClient.getPeriodData(startDate, endDate);
             workingDays = getNumberOfWorkingDays(dayStatusMap);
         } catch (IntegrationException e) {
-            log.error(e.getMessage() + "\nUsing dummy method");
+            log.error(e.getMessage() + " Using dummy method");
             workingDays = dummyWorkingDaysCounter(startDate, days);
         }
         var payment = averageSalary.multiply(BigDecimal.valueOf(workingDays));

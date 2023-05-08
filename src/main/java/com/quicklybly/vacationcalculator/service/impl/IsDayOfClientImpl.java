@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -32,7 +33,6 @@ public class IsDayOfClientImpl implements IsDayOffClient {
     private String getResponse(LocalDate startDate, LocalDate endDate) {
         var formatter = getFormatter();
         final var NUMBER_OF_RETRIES = 3;
-        //TODO resolve dns exception, retry delay
         return client.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("/api/getdata")
@@ -46,8 +46,7 @@ public class IsDayOfClientImpl implements IsDayOffClient {
                     }
                     return Mono.error(IntegrationException::new);
                 })
-                .retryWhen(Retry.max(NUMBER_OF_RETRIES)
-                        .filter(throwable -> throwable instanceof IntegrationException)
+                .retryWhen(Retry.fixedDelay(NUMBER_OF_RETRIES, Duration.ofSeconds(1))
                         .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> {
                             throw new IntegrationException();
                         }))
