@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -32,20 +33,21 @@ public class CalculatorServiceImpl implements CalculatorService {
     @Override
     public CalculateResponse calculateWithStartDate(CalculateRequest request,
                                                     LocalDate startDate) {
-        //TODO - check for dummy vacation calendar
+        //TODO think about different code
+        var days = request.daysOfVacation();
+        var averageSalary = request.averageSalary();
+        int workingDays;
         try {
-            var days = request.daysOfVacation();
-            var averageSalary = request.averageSalary();
             var endDate = startDate.plusDays(days - 1);
             var dayStatusMap = isDayOffClient.getPeriodData(startDate, endDate);
-            var workingDays = BigDecimal.valueOf(getNumberOfWorkingDays(dayStatusMap));
-            var payment = averageSalary.multiply(workingDays);
-
-            return new CalculateResponse(payment);
+            workingDays = getNumberOfWorkingDays(dayStatusMap);
         } catch (IntegrationException e) {
-            log.error(e.getMessage());
-            return calculate(request);
+            log.error(e.getMessage() + "\nUsing dummy method");
+            workingDays = dummyWorkingDaysCounter(startDate, days);
         }
+        var payment = averageSalary.multiply(BigDecimal.valueOf(workingDays));
+
+        return new CalculateResponse(payment);
     }
 
     private int getNumberOfWorkingDays(Map<LocalDate, DayStatus> dayStatusMap) {
@@ -54,6 +56,20 @@ public class CalculatorServiceImpl implements CalculatorService {
             if (DayStatus.WORKING == status) {
                 ++workingDays;
             }
+        }
+        return workingDays;
+    }
+
+    private int dummyWorkingDaysCounter(LocalDate startDate, Integer days) {
+        int workingDays = 0;
+        var currentDate = startDate;
+        for (int i = 0; i < days; ++i) {
+            var dayOfWeek = currentDate.getDayOfWeek();
+            if (DayOfWeek.SATURDAY != dayOfWeek &&
+                    DayOfWeek.SUNDAY != dayOfWeek) {
+                ++workingDays;
+            }
+            currentDate = currentDate.plusDays(1);
         }
         return workingDays;
     }
