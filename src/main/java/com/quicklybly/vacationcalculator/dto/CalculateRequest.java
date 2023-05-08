@@ -1,4 +1,4 @@
-package com.quicklybly.vacationcalendar.dto;
+package com.quicklybly.vacationcalculator.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;

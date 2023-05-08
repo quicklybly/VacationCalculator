@@ -1,7 +1,7 @@
-package com.quicklybly.vacationcalendar.controller;
+package com.quicklybly.vacationcalculator.controller;
 
-import com.quicklybly.vacationcalendar.dto.CalculateRequest;
-import com.quicklybly.vacationcalendar.dto.CalculateResponse;
+import com.quicklybly.vacationcalculator.dto.CalculateRequest;
+import com.quicklybly.vacationcalculator.dto.CalculateResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;

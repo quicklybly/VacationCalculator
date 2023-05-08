@@ -1,8 +1,8 @@
-package com.quicklybly.vacationcalendar.controller;
+package com.quicklybly.vacationcalculator.controller;
 
-import com.quicklybly.vacationcalendar.dto.CalculateRequest;
-import com.quicklybly.vacationcalendar.dto.CalculateResponse;
-import com.quicklybly.vacationcalendar.service.CalculatorService;
+import com.quicklybly.vacationcalculator.dto.CalculateRequest;
+import com.quicklybly.vacationcalculator.dto.CalculateResponse;
+import com.quicklybly.vacationcalculator.service.CalculatorService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,7 @@
-package com.quicklybly.vacationcalendar.service;
+package com.quicklybly.vacationcalculator.service;
 
-import com.quicklybly.vacationcalendar.dto.CalculateRequest;
-import com.quicklybly.vacationcalendar.dto.CalculateResponse;
+import com.quicklybly.vacationcalculator.dto.CalculateRequest;
+import com.quicklybly.vacationcalculator.dto.CalculateResponse;
 
 import java.time.LocalDate;
 
