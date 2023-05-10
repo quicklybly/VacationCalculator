@@ -1,9 +1,9 @@
 package com.quicklybly.vacationcalculator.service.impl;
 
 import com.quicklybly.vacationcalculator.enums.DayStatus;
-import com.quicklybly.vacationcalculator.exception.IntegrationException;
 import com.quicklybly.vacationcalculator.service.IsDayOffClient;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -17,6 +17,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.quicklybly.vacationcalculator.exception.AppException.CODE.INTEGRATION_FINAL_EXCEPTION;
+import static com.quicklybly.vacationcalculator.exception.AppException.CODE.INTEGRATION_RETRY_EXCEPTION;
+
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class IsDayOfClientImpl implements IsDayOffClient {
@@ -44,11 +48,15 @@ public class IsDayOfClientImpl implements IsDayOffClient {
                     if (response.statusCode().equals(HttpStatus.OK)) {
                         return response.bodyToMono(String.class);
                     }
-                    return Mono.error(IntegrationException::new);
+                    var e = INTEGRATION_RETRY_EXCEPTION.get();
+                    log.warn(e.getMessage(), e);
+                    return Mono.error(e);
                 })
                 .retryWhen(Retry.fixedDelay(NUMBER_OF_RETRIES, Duration.ofSeconds(1))
                         .onRetryExhaustedThrow((retryBackoffSpec, retrySignal) -> {
-                            throw new IntegrationException();
+                            var e = INTEGRATION_FINAL_EXCEPTION.get();
+                            log.error(e.getMessage(), e);
+                            throw e;
                         }))
                 .block();
     }

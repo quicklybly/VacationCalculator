@@ -23,7 +23,7 @@ public class AppExceptionHandler {
         return fieldErrors.stream()
                 .collect(Collectors.toMap(FieldError::getField, error -> {
                     var message = Optional.ofNullable(error.getDefaultMessage());
-                    return message.orElse("");
+                    return message.orElse("Wrong argument");
                 }));
     }
 }

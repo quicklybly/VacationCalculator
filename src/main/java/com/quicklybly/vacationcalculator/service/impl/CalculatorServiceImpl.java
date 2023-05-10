@@ -3,7 +3,7 @@ package com.quicklybly.vacationcalculator.service.impl;
 import com.quicklybly.vacationcalculator.dto.CalculateRequest;
 import com.quicklybly.vacationcalculator.dto.CalculateResponse;
 import com.quicklybly.vacationcalculator.enums.DayStatus;
-import com.quicklybly.vacationcalculator.exception.IntegrationException;
+import com.quicklybly.vacationcalculator.exception.AppException;
 import com.quicklybly.vacationcalculator.service.CalculatorService;
 import com.quicklybly.vacationcalculator.service.IsDayOffClient;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +41,8 @@ public class CalculatorServiceImpl implements CalculatorService {
             var endDate = startDate.plusDays(days - 1);
             var dayStatusMap = isDayOffClient.getPeriodData(startDate, endDate);
             workingDays = getNumberOfWorkingDays(dayStatusMap);
-        } catch (IntegrationException e) {
-            log.error(e.getMessage() + " Using dummy method");
+        } catch (AppException e) {
+            log.warn(e.getMessage() + " Using dummy method");
             workingDays = dummyWorkingDaysCounter(startDate, days);
         }
         var payment = averageSalary.multiply(BigDecimal.valueOf(workingDays));
