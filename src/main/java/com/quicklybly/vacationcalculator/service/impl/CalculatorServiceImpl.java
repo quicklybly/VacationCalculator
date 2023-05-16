@@ -33,7 +33,6 @@ public class CalculatorServiceImpl implements CalculatorService {
     @Override
     public CalculateResponse calculateWithStartDate(CalculateRequest request,
                                                     LocalDate startDate) {
-        //TODO think about different code
         var days = request.daysOfVacation();
         var averageSalary = request.averageSalary();
         int workingDays;
